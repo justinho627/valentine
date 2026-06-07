@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Miffbucks Coffee logo">
+  <defs>
+    <path id="arcTop" d="M30 100 a70 70 0 0 1 140 0" fill="none"/>
+    <path id="arcBot" d="M34 100 a66 66 0 0 0 132 0" fill="none"/>
+  </defs>
+
+  <!-- outer green ring -->
+  <circle cx="100" cy="100" r="96" fill="#00704A"/>
+  <circle cx="100" cy="100" r="78" fill="#00704A" stroke="#fff" stroke-width="2.5"/>
+
+  <!-- arc text -->
+  <text fill="#fff" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="20" letter-spacing="3">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">MIFFBUCKS</textPath>
+  </text>
+  <text fill="#fff" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="17" letter-spacing="4">
+    <textPath href="#arcBot" startOffset="50%" text-anchor="middle">COFFEE</textPath>
+  </text>
+  <!-- flanking stars -->
+  <path d="M30 100 l3 6 l7 0 l-5 5 l2 7 l-7 -4 l-7 4 l2 -7 l-5 -5 l7 0 z" fill="#fff"/>
+  <path d="M170 100 l3 6 l7 0 l-5 5 l2 7 l-7 -4 l-7 4 l2 -7 l-5 -5 l7 0 z" fill="#fff"/>
+
+  <!-- center cream disc -->
+  <circle cx="100" cy="100" r="58" fill="#f4efe1"/>
+
+  <!-- Miffy head in the middle -->
+  <g>
+    <!-- ears -->
+    <path d="M84 96 C80 70 81 50 90 38 C95 30 104 30 107 40 C112 58 111 84 104 100 Z" fill="#fff" stroke="#1a1a1a" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M116 96 C120 70 119 50 110 38 C105 30 96 30 93 40 C98 62 101 84 96 100 Z" fill="#fff" stroke="#1a1a1a" stroke-width="3.5" stroke-linejoin="round" transform="translate(8 0)"/>
+    <!-- head -->
+    <ellipse cx="100" cy="118" rx="40" ry="36" fill="#fff" stroke="#1a1a1a" stroke-width="3.5"/>
+    <!-- eyes + mouth -->
+    <ellipse cx="87" cy="114" rx="3.6" ry="5" fill="#1a1a1a"/>
+    <ellipse cx="113" cy="114" rx="3.6" ry="5" fill="#1a1a1a"/>
+    <path d="M94 130 l7 6 M108 130 l-7 6" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
