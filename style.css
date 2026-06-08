@@ -230,6 +230,13 @@ button {
     color: #666;
 }
 
+/* Responsive: scale the whole card to fit small screens (phones).
+   Desktop/iPad keep --app-scale = 1 (unchanged). */
+.container, .intro-container {
+    transform: scale(var(--app-scale, 1));
+    transform-origin: center center;
+}
+
 /* ============================================================
    CHAPTER 2 - STARBUCKS THEME
    Chapter 1 (Valentine) keeps the pink/hearts palette above.
@@ -300,7 +307,15 @@ body.ch2 {
 }
 .chapter2 .miffy-at-bar {
     position: absolute; top: 52px; left: 50%; transform: translateX(-50%);
+    transform-origin: center bottom;
     width: 124px; height: auto; z-index: 1;
+    animation: idleBob 3.2s ease-in-out infinite;
+}
+@keyframes idleBob {
+    0%, 100% { transform: translateX(-50%) translateY(0)    scaleY(1);    }
+    45%      { transform: translateX(-50%) translateY(-3px) scaleY(1);    }
+    50%      { transform: translateX(-50%) translateY(-3px) scaleY(.985); }
+    55%      { transform: translateX(-50%) translateY(-3px) scaleY(1);    }
 }
 .chapter2 .bar-counter {
     position: absolute; left: 18px; right: 18px; top: 248px; height: 74px;
@@ -349,6 +364,22 @@ body.ch2 {
     from { transform: translateX(-50%) scale(.35); opacity: .2; }
     to   { transform: translateX(-50%) scale(1);   opacity: 1; }
 }
+/* Rising steam wisps (used on the cup scene and the flip-cup scene) */
+.chapter2 .steam {
+    position: absolute; width: 7px; height: 20px;
+    background: rgba(120,170,150,.5); border-radius: 50%; filter: blur(2px);
+    opacity: 0; pointer-events: none;
+}
+.chapter2 .handcup .steam { top: -2px; }
+.chapter2 .flip-wrap .steam { top: 4px; z-index: 1; }
+.chapter2 .s1 { left: 41%; animation: steamRise 2.2s ease-in-out infinite; }
+.chapter2 .s2 { left: 50%; animation: steamRise 2.6s ease-in-out .6s infinite; }
+.chapter2 .s3 { left: 59%; animation: steamRise 2.0s ease-in-out 1.1s infinite; }
+@keyframes steamRise {
+    0%   { opacity: 0;  transform: translate(-50%, 8px)   scaleY(.6); }
+    25%  { opacity: .7; }
+    100% { opacity: 0;  transform: translate(-50%, -26px) scaleY(1.3); }
+}
 
 /* ---- Scene: the cup flips + zooms to reveal the question on the back ---- */
 .chapter2 .flip-wrap {
@@ -376,6 +407,128 @@ body.ch2 {
     color: #fff; font-weight: 800; font-size: 13px;
     line-height: 1.15; text-align: center; white-space: nowrap;
 }
+
+/* ---- Mini-game: Make Jho's Americano ---- */
+.chapter2 .game-stage { position: absolute; inset: 0; }
+.chapter2 .machine {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 150px; height: 90px; background: linear-gradient(#3c3c3c, #1f1f1f);
+    border-radius: 10px; box-shadow: 0 5px 10px rgba(0,0,0,.2); z-index: 2;
+}
+.chapter2 .machine::after { /* green badge on the machine */
+    content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    width: 26px; height: 26px; border-radius: 50%; background: #00704A; box-shadow: 0 0 0 3px #0a5c3f;
+}
+.chapter2 .machine-spout {
+    position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+    width: 8px; height: 14px; background: #6b6b6b; border-radius: 0 0 3px 3px;
+}
+.chapter2 .pour-stream {
+    position: absolute; top: 92px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 64px; background: #4b2e1e; border-radius: 2px; opacity: 0; z-index: 2;
+}
+.chapter2 .game-stage.pouring .pour-stream { opacity: .85; animation: pourPulse .25s linear infinite; }
+@keyframes pourPulse { 0%,100% { opacity:.5; } 50% { opacity:.9; } }
+.chapter2 .dropzone {
+    position: absolute; top: 150px; left: 50%; transform: translateX(-50%);
+    width: 92px; height: 92px; border: 2px dashed rgba(0,112,74,.55); border-radius: 12px; z-index: 1;
+}
+.chapter2 .game-cup {
+    position: absolute; top: 150px; left: 40px; width: 72px; height: 92px;
+    cursor: grab; touch-action: none; z-index: 3;
+}
+.chapter2 .cup-shell {
+    position: absolute; inset: 0; background: #fff; border: 3px solid #1a1a1a;
+    border-radius: 6px 6px 12px 12px; overflow: hidden;
+}
+.chapter2 .coffee-fill {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 0;
+    background: linear-gradient(#6f4e37, #4b2e1e); transition: height 1.6s ease;
+}
+.chapter2 .game-sleeve {
+    position: absolute; left: 0; right: 0; bottom: 30px; height: 28px; z-index: 3;
+    display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.chapter2 .game-logo { width: 24px; height: 24px; display: block; pointer-events: none; }
+/* hot-water layer - fills brown in the cup (only the pour stream is blue) */
+.chapter2 .water-fill { position: absolute; left: 0; right: 0; bottom: 34%; height: 0; background: linear-gradient(#6f4e37, #4b2e1e); }
+.chapter2 .foam-heart {
+    position: absolute; top: 36%; left: 50%; width: 20px; height: 18px;
+    transform: translate(-50%, -50%) scale(0); z-index: 4; pointer-events: none;
+    transition: transform .4s cubic-bezier(.2,.9,.3,1.6);
+}
+.chapter2 .foam-heart.show { transform: translate(-50%, -50%) scale(1); }
+.chapter2 .foam-heart::before, .chapter2 .foam-heart::after {
+    content: ''; position: absolute; top: 0; width: 10px; height: 15px;
+    background: #f4efe1; border-radius: 10px 10px 0 0;
+}
+.chapter2 .foam-heart::before { left: 10px; transform: rotate(-45deg); transform-origin: 0 100%; }
+.chapter2 .foam-heart::after  { left: 0;  transform: rotate(45deg);  transform-origin: 100% 100%; }
+.chapter2 #gameBtn { background: var(--sbux-green); color: #fff; margin-top: 16px; }
+.chapter2 #gameBtn:hover { transform: scale(1.06); }
+
+/* ---- Mini-game prep steps (weigh / grind / tamp) ---- */
+.chapter2 .prep-visual {
+    position: absolute; top: 56px; left: 0; right: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+}
+.chapter2 .readout {
+    font-size: 24px; font-weight: 800; color: var(--sbux-green-dark);
+    background: #f4efe1; border: 3px solid #1a1a1a; border-radius: 8px; padding: 6px 18px;
+}
+.chapter2 .gauge {
+    position: relative; width: 240px; height: 18px;
+    background: #e7e2d6; border: 2px solid #1a1a1a; border-radius: 10px; overflow: hidden;
+}
+.chapter2 .gauge-zone { position: absolute; top: 0; bottom: 0; background: rgba(0,112,74,.4); }
+.chapter2 .gauge-fill { position: absolute; top: 0; bottom: 0; left: 0; width: 0; background: #6f4e37; }
+/* grinder: bean hopper + body + chute */
+.chapter2 .grinder { position: relative; width: 80px; height: 98px; }
+.chapter2 .grinder-hopper { position: absolute; top: 0; left: 8px; right: 8px; height: 26px; background: #d9c7a8; border: 3px solid #1a1a1a; border-radius: 10px 10px 4px 4px; overflow: hidden; }
+.chapter2 .grinder-hopper::before { content: ''; position: absolute; top: 4px; left: 5px; width: 12px; height: 9px; background: #5b3a26; border-radius: 50%;
+    box-shadow: 10px 0 #4b2e1e, 20px 1px #5b3a26, 30px 0 #4b2e1e, 40px 1px #5b3a26, 0 8px #5b3a26, 10px 9px #4b2e1e, 20px 8px #5b3a26, 30px 9px #4b2e1e, 40px 8px #4b2e1e; }
+.chapter2 .grinder-body { position: absolute; top: 24px; left: 0; right: 0; height: 50px; background: linear-gradient(#4a4a4a, #262626); border: 3px solid #1a1a1a; border-radius: 6px; }
+.chapter2 .grinder-chute { position: absolute; top: 72px; left: 50%; transform: translateX(-50%); width: 26px; height: 22px; background: #333; border: 3px solid #1a1a1a; border-top: none; border-radius: 0 0 8px 8px; }
+.chapter2 .game-stage.grinding .grinder { animation: grindShake .08s linear infinite; }
+@keyframes grindShake {
+    0%{transform:translate(0,0)} 25%{transform:translate(-2px,1px)}
+    50%{transform:translate(2px,-1px)} 75%{transform:translate(-1px,-1px)} 100%{transform:translate(1px,1px)}
+}
+.chapter2 .ground { position: absolute; top: 90px; left: 50%; width: 5px; height: 5px; background: #5b3a26; border-radius: 50%; animation: groundFall .55s ease-in forwards; }
+@keyframes groundFall { from { transform: translate(-50%, 0); opacity: 1; } to { transform: translate(-50%, 28px); opacity: 0; } }
+/* beans falling onto the scale (weigh) */
+.chapter2 .bean { position: absolute; top: 138px; width: 9px; height: 13px; background: #5b3a26; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: beanFall .62s ease-in forwards; z-index: 2; }
+@keyframes beanFall { from { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 80% { opacity: 1; } to { transform: translateY(64px); opacity: 0; } }
+/* portafilter: basket + handle */
+.chapter2 .portafilter { position: relative; width: 104px; height: 38px; }
+.chapter2 .pf-basket { position: absolute; left: 0; width: 104px; height: 38px; background: #9a9a9a; border: 3px solid #1a1a1a; border-radius: 3px 3px 8px 8px; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; z-index: 2; }
+.chapter2 .pf-basket .grounds { width: 96px; height: 22px; background: #5b3a26; border-radius: 2px; margin-top: 2px; }
+.chapter2 .pf-handle { position: absolute; left: 78px; top: 10px; width: 104px; height: 13px; background: linear-gradient(#333, #1a1a1a); border: 3px solid #1a1a1a; border-radius: 7px; z-index: 1; }
+/* tamper: handle + disc base */
+.chapter2 .tamper { position: relative; width: 60px; height: 48px; transform: translateY(-30px); }
+.chapter2 .tamper-handle { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 22px; height: 26px; background: linear-gradient(#3a3a3a, #222); border: 3px solid #1a1a1a; border-radius: 8px 8px 3px 3px; }
+.chapter2 .tamper-base { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); box-sizing: border-box; width: 96px; height: 14px; background: linear-gradient(#555, #333); border: 3px solid #1a1a1a; border-radius: 4px 4px 7px 7px; }
+.chapter2 #gameBtn { touch-action: none; }
+.chapter2 .quality { color: #e0a400; font-size: 18px; letter-spacing: 2px; }
+
+/* ---- Brew: pull-the-shot timing bar + water fill line ---- */
+.chapter2 .shot-bar {
+    position: absolute; top: 262px; left: 50%; transform: translateX(-50%);
+    width: 240px; height: 20px; background: #e7e2d6; border: 2px solid #1a1a1a;
+    border-radius: 10px; overflow: hidden; z-index: 4;
+}
+.chapter2 .shot-zone { position: absolute; top: 0; bottom: 0; left: 40%; width: 20%; background: rgba(0,112,74,.45); }
+.chapter2 .shot-marker { position: absolute; top: -3px; bottom: -3px; width: 6px; background: #1a1a1a; border-radius: 3px; left: 0; }
+.chapter2 .fill-line { position: absolute; left: -3px; right: -3px; bottom: 72%; height: 2px; background: #c0392b; z-index: 5; }
+
+/* ---- Anniversary date picker ---- */
+.chapter2 .date-input {
+    display: block; margin: 16px auto 0; padding: 10px 14px; font-size: 16px;
+    border: 2px solid var(--sbux-green); border-radius: 10px;
+    color: var(--sbux-green-dark); font-family: inherit; background: #fff;
+}
+.chapter2 #annBtn { background: var(--sbux-green); color: #fff; margin-top: 16px; }
+.chapter2 #annBtn:hover { transform: scale(1.06); }
 
 /* ---- Celebration: Miffy pops in, confetti rains ---- */
 .chapter2 .miffy-img.joy {
